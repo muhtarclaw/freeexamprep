@@ -19,6 +19,7 @@ export function PayPalSupport({
   configured
 }: PayPalSupportProps) {
   const [selectedAmount, setSelectedAmount] = useState(15);
+  const [customAmount, setCustomAmount] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [note, setNote] = useState("");
@@ -26,10 +27,20 @@ export function PayPalSupport({
   const [scriptReady, setScriptReady] = useState(false);
   const [paymentComplete, setPaymentComplete] = useState(false);
   const buttonContainerRef = useRef<HTMLDivElement | null>(null);
+  const activeAmount =
+    customAmount.trim().length > 0 ? Number.parseFloat(customAmount) : selectedAmount;
 
   const canRenderButtons = useMemo(
-    () => Boolean(configured && scriptReady && name.trim() && email.trim()),
-    [configured, scriptReady, name, email]
+    () =>
+      Boolean(
+        configured &&
+          scriptReady &&
+          name.trim() &&
+          email.trim() &&
+          Number.isFinite(activeAmount) &&
+          activeAmount >= 1
+      ),
+    [activeAmount, configured, scriptReady, name, email]
   );
 
   useEffect(() => {
@@ -56,7 +67,7 @@ export function PayPalSupport({
               body: JSON.stringify({
                 name,
                 email,
-                amount: selectedAmount,
+                amount: activeAmount,
                 currency,
                 message: note
               })
@@ -89,7 +100,7 @@ export function PayPalSupport({
               orderId: orderID,
               name,
               email,
-              amount: selectedAmount,
+              amount: activeAmount,
               currency,
               message: note
             })
@@ -113,18 +124,21 @@ export function PayPalSupport({
         }
       })
       .render(buttonContainerRef.current);
-  }, [canRenderButtons, currency, email, name, note, selectedAmount]);
+  }, [activeAmount, canRenderButtons, currency, email, name, note]);
 
   return (
     <div className="space-y-5 rounded-[2rem] border border-white/10 bg-white/5 p-8">
-      <div className="grid gap-3 sm:grid-cols-4">
+      <div className="grid gap-3 sm:grid-cols-5">
         {presets.map((amount) => (
           <button
             key={amount}
             type="button"
-            onClick={() => setSelectedAmount(amount)}
+            onClick={() => {
+              setSelectedAmount(amount);
+              setCustomAmount("");
+            }}
             className={`rounded-2xl border px-4 py-4 text-left transition ${
-              selectedAmount === amount
+              customAmount.length === 0 && selectedAmount === amount
                 ? "border-amber-300 bg-amber-300/10 text-amber-100"
                 : "border-white/10 bg-slate-950/70 text-slate-300"
             }`}
@@ -132,6 +146,27 @@ export function PayPalSupport({
             {formatCurrency(amount)}
           </button>
         ))}
+        <div
+          className={`rounded-2xl border px-4 py-3 transition ${
+            customAmount.length > 0
+              ? "border-amber-300 bg-amber-300/10"
+              : "border-white/10 bg-slate-950/70"
+          }`}
+        >
+          <label className="mb-1 block text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
+            Other
+          </label>
+          <input
+            type="number"
+            min="1"
+            step="1"
+            inputMode="decimal"
+            value={customAmount}
+            onChange={(event) => setCustomAmount(event.target.value)}
+            className="w-full bg-transparent text-left text-lg text-white outline-none placeholder:text-sm placeholder:text-slate-500"
+            placeholder="$"
+          />
+        </div>
       </div>
 
       <div className="grid gap-5 md:grid-cols-2">
@@ -170,7 +205,9 @@ export function PayPalSupport({
       <div className="rounded-2xl border border-white/10 bg-slate-950/70 px-4 py-4">
         <p className="text-sm text-slate-300">Support amount</p>
         <p className="mt-1 text-2xl font-semibold text-white">
-          {formatCurrency(selectedAmount)}
+          {Number.isFinite(activeAmount) && activeAmount >= 1
+            ? formatCurrency(activeAmount)
+            : "Enter at least $1"}
         </p>
       </div>
 
@@ -185,6 +222,10 @@ export function PayPalSupport({
           {!name.trim() || !email.trim() ? (
             <p className="text-sm text-slate-300">
               Enter your name and email to enable the PayPal button.
+            </p>
+          ) : !Number.isFinite(activeAmount) || activeAmount < 1 ? (
+            <p className="text-sm text-slate-300">
+              Enter a support amount of at least $1 to enable PayPal.
             </p>
           ) : null}
 
