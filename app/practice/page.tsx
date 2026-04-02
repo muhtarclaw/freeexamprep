@@ -54,11 +54,11 @@ export default async function PracticePage({ searchParams }: PracticePageProps) 
           />
 
           <aside className="space-y-6">
-            <div className="rounded-[2rem] border border-white/10 bg-white/5 p-8">
-              <p className="text-sm uppercase tracking-[0.3em] text-amber-300/80">
+            <div className="editorial-card rounded-[2rem] p-8">
+              <p className="text-sm uppercase tracking-[0.3em] text-[color:var(--brand)]">
                 Your dashboard
               </p>
-              <h2 className="mt-3 text-2xl font-semibold text-white">
+              <h2 className="mt-3 text-2xl font-semibold text-[color:var(--foreground)]">
                 Recent progress
               </h2>
               <div className="mt-5 space-y-3">
@@ -66,14 +66,16 @@ export default async function PracticePage({ searchParams }: PracticePageProps) 
                   attempts.map((attempt, index) => (
                     <div
                       key={`${attempt.createdAt}-${index}`}
-                      className="rounded-2xl border border-white/10 px-4 py-3"
+                      className="rounded-2xl border border-[var(--line)] bg-white/70 px-4 py-3"
                     >
-                      <p className="text-sm text-white">{attempt.score}% score</p>
-                      <p className="text-xs text-slate-400">{attempt.createdAt}</p>
+                      <p className="text-sm text-[color:var(--foreground)]">
+                        {attempt.score}% score
+                      </p>
+                      <p className="text-xs text-[color:var(--ink-soft)]">{attempt.createdAt}</p>
                     </div>
                   ))
                 ) : (
-                  <p className="text-sm text-slate-300">
+                  <p className="text-sm text-[color:var(--ink-soft)]">
                     No saved attempts yet. Finish one practice set to start.
                   </p>
                 )}
@@ -82,27 +84,28 @@ export default async function PracticePage({ searchParams }: PracticePageProps) 
           </aside>
         </div>
       ) : (
-        <div className="rounded-[2.5rem] border border-white/10 bg-white/5 p-8">
-          <p className="text-sm uppercase tracking-[0.3em] text-amber-300/80">
+        <div className="editorial-card rounded-[2.5rem] p-8">
+          <p className="text-sm uppercase tracking-[0.3em] text-[color:var(--brand)]">
             Practice access
           </p>
-          <h1 className="mt-4 text-4xl font-semibold text-white">
-            Practice is better with an account
+          <h1 className="mt-4 text-4xl font-semibold text-[color:var(--foreground)]">
+            Save your TELC, fide, and Goethe practice history
           </h1>
-          <p className="mt-4 max-w-2xl text-slate-300">
-            Visitors can view public exam questions, but login lets you save scores,
-            compare results, and build a personal exam routine.
+          <p className="mt-4 max-w-2xl text-[color:var(--ink-soft)]">
+            You can browse the exam library without an account, but signing in lets
+            you keep scores, compare attempts, and turn random study sessions into a
+            real plan.
           </p>
           <div className="mt-8 flex flex-wrap gap-4">
             <Link
               href="/register"
-              className="rounded-full bg-[linear-gradient(135deg,var(--brand),var(--brand-2))] px-5 py-3 text-sm font-semibold text-slate-950"
+              className="rounded-full bg-[linear-gradient(135deg,var(--brand),var(--brand-2))] px-5 py-3 text-sm font-semibold text-white"
             >
               Create free account
             </Link>
             <Link
               href="/login"
-              className="rounded-full border border-white/15 px-5 py-3 text-sm font-semibold text-white"
+              className="rounded-full border border-[var(--line)] bg-white/60 px-5 py-3 text-sm font-semibold text-[color:var(--foreground)]"
             >
               Log in
             </Link>

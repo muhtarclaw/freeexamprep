@@ -1,11 +1,37 @@
 @import "tailwindcss";
 
 :root {
+  --background: #f4eee3;
+  --foreground: #1c2431;
+  --brand: #cf5f3f;
+  --brand-2: #db9d3f;
+  --accent: #2f6c63;
+  --accent-soft: rgba(47, 108, 99, 0.1);
+  --ink-soft: #5c6675;
+  --panel: rgba(255, 250, 242, 0.84);
+  --panel-strong: rgba(255, 248, 239, 0.94);
+  --line: rgba(28, 36, 49, 0.1);
+  --body-background:
+    radial-gradient(circle at top left, rgba(219, 157, 63, 0.24), transparent 24%),
+    radial-gradient(circle at top right, rgba(47, 108, 99, 0.14), transparent 25%),
+    linear-gradient(180deg, #efe4d4 0%, #f7f1e8 35%, #f3ecdf 100%);
+}
+
+:root[data-theme="dark"] {
   --background: #08111f;
   --foreground: #f8fafc;
   --brand: #f6c453;
   --brand-2: #f88355;
+  --accent: #6ad2c1;
+  --accent-soft: rgba(106, 210, 193, 0.12);
+  --ink-soft: #c0cbda;
   --panel: rgba(15, 23, 42, 0.78);
+  --panel-strong: rgba(10, 20, 39, 0.9);
+  --line: rgba(255, 255, 255, 0.1);
+  --body-background:
+    radial-gradient(circle at top, rgba(248, 131, 85, 0.2), transparent 28%),
+    radial-gradient(circle at 20% 20%, rgba(246, 196, 83, 0.12), transparent 30%),
+    linear-gradient(180deg, #07101c 0%, #0a1427 40%, #050b14 100%);
 }
 
 * {
@@ -19,12 +45,13 @@ html {
 body {
   margin: 0;
   min-height: 100vh;
-  background:
-    radial-gradient(circle at top, rgba(248, 131, 85, 0.2), transparent 28%),
-    radial-gradient(circle at 20% 20%, rgba(246, 196, 83, 0.12), transparent 30%),
-    linear-gradient(180deg, #07101c 0%, #0a1427 40%, #050b14 100%);
+  background: var(--body-background);
   color: var(--foreground);
-  font-family: "Avenir Next", "Segoe UI", sans-serif;
+  font-family: "Avenir Next", "Segoe UI", "Helvetica Neue", sans-serif;
+  transition:
+    background-color 180ms ease,
+    color 180ms ease,
+    background 180ms ease;
 }
 
 a {
@@ -34,14 +61,47 @@ a {
 
 .mesh-panel {
   background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.04)),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.55), rgba(255, 248, 239, 0.8)),
     var(--panel);
   backdrop-filter: blur(18px);
+  box-shadow: 0 30px 80px rgba(68, 45, 19, 0.08);
 }
 
 h1,
 h2,
 h3,
 h4 {
-  font-family: "Trebuchet MS", "Avenir Next Condensed", sans-serif;
+  font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", serif;
+}
+
+::selection {
+  background: rgba(207, 95, 63, 0.18);
+}
+
+.paper-grid {
+  position: relative;
+}
+
+.paper-grid::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(28, 36, 49, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(28, 36, 49, 0.035) 1px, transparent 1px);
+  background-size: 24px 24px;
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.45), transparent 90%);
+}
+
+.editorial-card {
+  background: var(--panel-strong);
+  border: 1px solid var(--line);
+  box-shadow: 0 18px 60px rgba(73, 46, 17, 0.08);
+}
+
+.soft-ring {
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.55),
+    0 18px 40px rgba(79, 49, 15, 0.08);
 }

@@ -1,5 +1,10 @@
 import Link from "next/link";
-import { ArrowRight, FileText, HeartHandshake, ShieldCheck } from "lucide-react";
+import {
+  ArrowRight,
+  AudioLines,
+  BookOpenText,
+  Mic
+} from "lucide-react";
 
 import { ExamCard } from "@/components/exam-card";
 import { SectionTitle } from "@/components/section-title";
@@ -7,43 +12,44 @@ import { sampleExams } from "@/lib/sample-data";
 
 export default function HomePage() {
   return (
-    <div className="pb-24">
+    <div className="paper-grid pb-24">
       <section className="relative overflow-hidden">
         <div className="mx-auto grid max-w-7xl gap-14 px-6 pb-20 pt-16 lg:grid-cols-[1.1fr_0.9fr] lg:px-8 lg:pt-24">
           <div>
-            <p className="inline-flex rounded-full border border-amber-300/20 bg-amber-300/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.35em] text-amber-200">
-              100% free TELC-style learning
+            <p className="inline-flex rounded-full border border-[rgba(47,108,99,0.14)] bg-[rgba(47,108,99,0.08)] px-4 py-2 text-xs font-semibold uppercase tracking-[0.35em] text-[color:var(--accent)]">
+              German exam practice for real life and real tests
             </p>
-            <h1 className="mt-8 max-w-3xl font-[family-name:var(--font-space-grotesk)] text-5xl font-bold tracking-tight text-white sm:text-6xl">
-              Free exam practice for everyone, with no paywall and no subscription.
+            <h1 className="mt-8 max-w-3xl text-5xl font-bold tracking-tight text-[color:var(--foreground)] sm:text-6xl">
+              Prepare for TELC, fide, Goethe, and more in one calm study space.
             </h1>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
-              ExamFlow lets everyone browse TELC-style questions for free. Logging
-              in simply unlocks saved attempts and better progress tools. The core
-              learning experience stays free for every student.
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-[color:var(--ink-soft)]">
+              FreeExamPrep gives learners a cleaner way to practice reading,
+              listening, writing, and speaking across the exam formats they are
+              actually studying for. Start with sample sets right away, then save
+              progress when you want a personal routine.
             </p>
 
-            <div className="mt-8 max-w-2xl rounded-[1.75rem] border border-emerald-400/20 bg-emerald-400/10 p-5">
-              <p className="text-xs font-semibold uppercase tracking-[0.35em] text-emerald-200">
-                Completely Free
+            <div className="editorial-card mt-8 max-w-2xl rounded-[1.9rem] p-5">
+              <p className="text-xs font-semibold uppercase tracking-[0.35em] text-[color:var(--brand)]">
+                What you can practice
               </p>
-              <p className="mt-3 text-base font-medium leading-7 text-white">
-                No subscription. No hidden upgrade. No locked question bank. The
-                platform is completely free to use.
+              <p className="mt-3 text-base font-medium leading-7 text-[color:var(--foreground)]">
+                Structured packs for reading, listening, speaking, and writing with
+                levels from A2 to C1 and a style inspired by official exam families.
               </p>
             </div>
 
             <div className="mt-10 flex flex-wrap gap-4">
               <Link
                 href="/exams"
-                className="inline-flex items-center gap-2 rounded-full bg-[linear-gradient(135deg,var(--brand),var(--brand-2))] px-6 py-3 text-sm font-semibold text-slate-950 transition hover:scale-[1.02]"
+                className="inline-flex items-center gap-2 rounded-full bg-[linear-gradient(135deg,var(--brand),var(--brand-2))] px-6 py-3 text-sm font-semibold text-white transition hover:scale-[1.02]"
               >
                 Start free practice
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
                 href="/register"
-                className="rounded-full border border-white/15 px-6 py-3 text-sm font-semibold text-white transition hover:border-amber-300 hover:text-amber-200"
+                className="rounded-full border border-[var(--line)] bg-white/60 px-6 py-3 text-sm font-semibold text-[color:var(--foreground)] transition hover:border-[color:var(--brand)] hover:text-[color:var(--brand)]"
               >
                 Create account
               </Link>
@@ -51,38 +57,43 @@ export default function HomePage() {
 
             <div className="mt-12 grid gap-4 sm:grid-cols-3">
               {[
-                ["Always free", "Open access to exam packs without payment or login"],
-                ["Optional account", "Logged-in users save results, but practice stays free"],
-                ["Community-powered", "Learners upload documents and supporters keep it free"]
+                ["Exam families", "Practice TELC, fide, Goethe, and related German exam styles in one library."],
+                ["Skill-based training", "Switch between reading, listening, writing, and speaking instead of only full mocks."],
+                ["Optional account", "Create an account to save attempts and keep a visible study rhythm."]
               ].map(([title, copy]) => (
-                <div key={title} className="mesh-panel rounded-[1.5rem] border border-white/10 p-5">
-                  <p className="text-sm font-semibold text-white">{title}</p>
-                  <p className="mt-2 text-sm leading-6 text-slate-300">{copy}</p>
+                <div key={title} className="editorial-card rounded-[1.5rem] p-5">
+                  <p className="text-sm font-semibold text-[color:var(--foreground)]">{title}</p>
+                  <p className="mt-2 text-sm leading-6 text-[color:var(--ink-soft)]">{copy}</p>
                 </div>
               ))}
             </div>
           </div>
 
           <div className="relative">
-            <div className="mesh-panel rounded-[2.5rem] border border-white/10 p-6 shadow-2xl shadow-black/30">
-              <div className="rounded-[2rem] border border-white/10 bg-slate-950/70 p-6">
+            <div className="editorial-card rounded-[2.8rem] p-6">
+              <div className="rounded-[2rem] border border-[var(--line)] bg-[rgba(255,255,255,0.66)] p-6">
                 <div className="flex items-center justify-between">
-                  <p className="text-sm font-medium text-slate-200">
-                    Weekly momentum
+                  <p className="text-sm font-medium text-[color:var(--foreground)]">
+                    This week&apos;s study mix
                   </p>
-                  <span className="rounded-full bg-emerald-400/15 px-3 py-1 text-xs text-emerald-200">
-                    +18%
+                  <span className="rounded-full bg-[rgba(47,108,99,0.08)] px-3 py-1 text-xs text-[color:var(--accent)]">
+                    4 exam paths
                   </span>
                 </div>
 
                 <div className="mt-8 space-y-4">
-                  {[78, 65, 88, 72].map((value, index) => (
-                    <div key={value} className="space-y-2">
-                      <div className="flex justify-between text-xs uppercase tracking-[0.3em] text-slate-400">
-                        <span>Set 0{index + 1}</span>
+                  {[
+                    ["Reading", 78],
+                    ["Listening", 65],
+                    ["Speaking", 88],
+                    ["Writing", 72]
+                  ].map(([label, value]) => (
+                    <div key={label} className="space-y-2">
+                      <div className="flex justify-between text-xs uppercase tracking-[0.3em] text-[color:var(--ink-soft)]">
+                        <span>{label}</span>
                         <span>{value}%</span>
                       </div>
-                      <div className="h-3 rounded-full bg-white/10">
+                      <div className="h-3 rounded-full bg-[rgba(28,36,49,0.08)]">
                         <div
                           className="h-3 rounded-full bg-[linear-gradient(90deg,var(--brand),var(--brand-2))]"
                           style={{ width: `${value}%` }}
@@ -96,28 +107,28 @@ export default function HomePage() {
               <div className="mt-6 grid gap-4 sm:grid-cols-3">
                 {[
                   {
-                    icon: ShieldCheck,
-                    title: "No paywall",
-                    copy: "Visitors can open exam packs immediately for free."
+                    icon: BookOpenText,
+                    title: "TELC",
+                    copy: "Everyday communication tasks with level-based reading and listening drills."
                   },
                   {
-                    icon: FileText,
-                    title: "Document upload",
-                    copy: "Students share notes and sample materials."
+                    icon: AudioLines,
+                    title: "Goethe",
+                    copy: "Sharper language and exam timing for structured listening and writing practice."
                   },
                   {
-                    icon: HeartHandshake,
-                    title: "Free by support",
-                    copy: "Optional donations help us keep learning open for everyone."
+                    icon: Mic,
+                    title: "fide",
+                    copy: "Practical Swiss daily-life scenarios for spoken German and useful responses."
                   }
                 ].map((item) => (
                   <div
                     key={item.title}
-                    className="rounded-[1.5rem] border border-white/10 bg-white/5 p-5"
+                    className="rounded-[1.5rem] border border-[var(--line)] bg-white/60 p-5"
                   >
-                    <item.icon className="h-5 w-5 text-amber-300" />
-                    <p className="mt-4 text-sm font-semibold text-white">{item.title}</p>
-                    <p className="mt-2 text-sm leading-6 text-slate-300">{item.copy}</p>
+                    <item.icon className="h-5 w-5 text-[color:var(--brand)]" />
+                    <p className="mt-4 text-sm font-semibold text-[color:var(--foreground)]">{item.title}</p>
+                    <p className="mt-2 text-sm leading-6 text-[color:var(--ink-soft)]">{item.copy}</p>
                   </div>
                 ))}
               </div>
@@ -129,8 +140,8 @@ export default function HomePage() {
       <section className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
         <SectionTitle
           eyebrow="Featured Exams"
-          title="Start with free TELC-style sets"
-          description="Anyone can open the questions, read the format, and practice right away. Accounts only add progress tracking, not a paywall."
+          title="Choose the exam style that matches your next goal"
+          description="Browse exam packs by provider, skill, and level. The library starts with realistic sample sets so you can build confidence before the real test day."
         />
         <div className="mt-10 grid gap-6 lg:grid-cols-3">
           {sampleExams.map((exam) => (
@@ -142,28 +153,28 @@ export default function HomePage() {
       <section className="mx-auto grid max-w-7xl gap-8 px-6 py-16 lg:grid-cols-3 lg:px-8">
         {[
           {
-            title: "Upload useful documents",
-            copy: "Students can send PDFs, notes, or worksheets that help us expand the library.",
+            title: "Collect better materials",
+            copy: "Upload useful PDFs, notes, and worksheets so the library feels closer to the exams people really take.",
             href: "/upload"
           },
           {
-            title: "Keep it free",
-            copy: "The website is free for learners, and optional support helps cover hosting and future content.",
+            title: "Support free access",
+            copy: "Optional support helps us keep practice open while expanding exam types and study tools.",
             href: "/support"
           },
           {
-            title: "Track your improvement",
-            copy: "Login turns free practice into a progress system with stored results and personal dashboards.",
+            title: "Build your routine",
+            copy: "Use an account to track attempts, compare scores, and stay consistent from A2 through C1.",
             href: "/practice"
           }
         ].map((item) => (
           <Link
             key={item.title}
             href={item.href}
-            className="mesh-panel rounded-[2rem] border border-white/10 p-8 transition hover:-translate-y-1"
+            className="editorial-card rounded-[2rem] p-8 transition hover:-translate-y-1"
           >
-            <p className="text-2xl font-semibold text-white">{item.title}</p>
-            <p className="mt-4 text-slate-300">{item.copy}</p>
+            <p className="text-2xl font-semibold text-[color:var(--foreground)]">{item.title}</p>
+            <p className="mt-4 text-[color:var(--ink-soft)]">{item.copy}</p>
           </Link>
         ))}
       </section>

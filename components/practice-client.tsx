@@ -59,30 +59,34 @@ export function PracticeClient({
 
   return (
     <div className="space-y-6">
-      <div className="rounded-[2rem] border border-white/10 bg-white/5 p-8">
-        <p className="text-sm uppercase tracking-[0.3em] text-amber-300/80">
+      <div className="editorial-card rounded-[2rem] p-8">
+        <p className="text-sm uppercase tracking-[0.3em] text-[color:var(--brand)]">
           Practice Mode
         </p>
-        <h1 className="mt-3 text-3xl font-semibold text-white">{title}</h1>
-        <p className="mt-3 text-slate-300">
-          Answer the questions and save your score when you are done.
+        <h1 className="mt-3 text-3xl font-semibold text-[color:var(--foreground)]">
+          {title}
+        </h1>
+        <p className="mt-3 text-[color:var(--ink-soft)]">
+          Work through each task, then save your result when you finish.
         </p>
       </div>
 
       {questions.map((question, index) => (
         <section
           key={question._id}
-          className="rounded-[2rem] border border-white/10 bg-slate-900/70 p-8"
+          className="editorial-card rounded-[2rem] p-8"
         >
-          <p className="text-sm text-amber-200">Question {index + 1}</p>
-          <h2 className="mt-2 text-xl font-medium text-white">{question.prompt}</h2>
+          <p className="text-sm text-[color:var(--brand)]">Question {index + 1}</p>
+          <h2 className="mt-2 text-xl font-medium text-[color:var(--foreground)]">
+            {question.prompt}
+          </h2>
 
           <div className="mt-5 space-y-3">
             {question.type === "multiple-choice" ? (
               question.options.map((option) => (
                 <label
                   key={option}
-                  className="flex cursor-pointer items-center gap-3 rounded-2xl border border-white/10 px-4 py-3 text-slate-200 transition hover:border-amber-300/40"
+                  className="flex cursor-pointer items-center gap-3 rounded-2xl border border-[var(--line)] bg-white/60 px-4 py-3 text-[color:var(--foreground)] transition hover:border-[color:var(--brand)]/50"
                 >
                   <input
                     type="radio"
@@ -109,7 +113,7 @@ export function PracticeClient({
                     [question._id]: event.target.value
                   }))
                 }
-                className="w-full rounded-2xl border border-white/10 bg-slate-950/70 px-4 py-3 text-white outline-none focus:border-amber-300"
+                className="w-full rounded-2xl border border-[var(--line)] bg-white/70 px-4 py-3 text-[color:var(--foreground)] outline-none focus:border-[color:var(--brand)]"
                 placeholder="Write your answer here"
               />
             )}
@@ -117,19 +121,21 @@ export function PracticeClient({
         </section>
       ))}
 
-      <div className="rounded-[2rem] border border-white/10 bg-white/5 p-8">
+      <div className="editorial-card rounded-[2rem] p-8">
         <button
           onClick={submit}
-          className="rounded-full bg-[linear-gradient(135deg,var(--brand),var(--brand-2))] px-5 py-3 text-sm font-semibold text-slate-950"
+          className="rounded-full bg-[linear-gradient(135deg,var(--brand),var(--brand-2))] px-5 py-3 text-sm font-semibold text-white"
         >
           Save result
         </button>
         {result ? (
-          <p className="mt-4 text-lg font-medium text-emerald-200">
+          <p className="mt-4 text-lg font-medium text-[color:var(--accent)]">
             Score: {result.score}%
           </p>
         ) : null}
-        {message ? <p className="mt-3 text-sm text-slate-300">{message}</p> : null}
+        {message ? (
+          <p className="mt-3 text-sm text-[color:var(--ink-soft)]">{message}</p>
+        ) : null}
       </div>
     </div>
   );

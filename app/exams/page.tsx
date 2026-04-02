@@ -7,8 +7,8 @@ export default async function ExamsPage() {
     <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
       <SectionTitle
         eyebrow="Exam Library"
-        title="Public exam packs, premium-style practice flow"
-        description="Users can browse exam collections without creating an account. When they log in, they can keep results and build consistency."
+        title="Practice packs for TELC, fide, Goethe, and more"
+        description="Explore by exam family, level, and skill area so you can choose the right format for your next speaking test, listening paper, or writing task."
       />
 
       <div className="mt-10 grid gap-6 lg:grid-cols-3">

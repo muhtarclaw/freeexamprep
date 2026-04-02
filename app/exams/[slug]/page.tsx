@@ -21,21 +21,23 @@ export default async function ExamDetailPage({ params }: ExamDetailPageProps) {
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-16 lg:px-8">
-      <div className="rounded-[2.5rem] border border-white/10 bg-white/5 p-8">
-        <p className="text-sm uppercase tracking-[0.35em] text-amber-300/80">
+      <div className="editorial-card rounded-[2.5rem] p-8">
+        <p className="text-sm uppercase tracking-[0.35em] text-[color:var(--brand)]">
           {exam.provider} {exam.level}
         </p>
-        <h1 className="mt-4 text-4xl font-semibold text-white">{exam.title}</h1>
-        <p className="mt-4 max-w-3xl text-slate-300">{exam.description}</p>
+        <h1 className="mt-4 text-4xl font-semibold text-[color:var(--foreground)]">
+          {exam.title}
+        </h1>
+        <p className="mt-4 max-w-3xl text-[color:var(--ink-soft)]">{exam.description}</p>
 
-        <div className="mt-8 flex flex-wrap gap-3 text-sm text-slate-300">
-          <span className="rounded-full border border-white/10 px-3 py-1">
+        <div className="mt-8 flex flex-wrap gap-3 text-sm text-[color:var(--ink-soft)]">
+          <span className="rounded-full border border-[var(--line)] px-3 py-1">
             {exam.category}
           </span>
-          <span className="rounded-full border border-white/10 px-3 py-1">
+          <span className="rounded-full border border-[var(--line)] px-3 py-1">
             {exam.durationMinutes} min
           </span>
-          <span className="rounded-full border border-white/10 px-3 py-1">
+          <span className="rounded-full border border-[var(--line)] px-3 py-1">
             {questions.length} sample questions
           </span>
         </div>
@@ -43,13 +45,13 @@ export default async function ExamDetailPage({ params }: ExamDetailPageProps) {
         <div className="mt-8 flex flex-wrap gap-4">
           <Link
             href="/register"
-            className="rounded-full bg-[linear-gradient(135deg,var(--brand),var(--brand-2))] px-5 py-3 text-sm font-semibold text-slate-950"
+            className="rounded-full bg-[linear-gradient(135deg,var(--brand),var(--brand-2))] px-5 py-3 text-sm font-semibold text-white"
           >
             Log in for full practice
           </Link>
           <Link
             href={`/practice?exam=${exam.slug}`}
-            className="rounded-full border border-white/15 px-5 py-3 text-sm font-semibold text-white"
+            className="rounded-full border border-[var(--line)] bg-white/60 px-5 py-3 text-sm font-semibold text-[color:var(--foreground)]"
           >
             Practice now
           </Link>
@@ -60,20 +62,25 @@ export default async function ExamDetailPage({ params }: ExamDetailPageProps) {
         {questions.map((question, index) => (
           <section
             key={`${question.prompt}-${index}`}
-            className="rounded-[2rem] border border-white/10 bg-slate-900/60 p-8"
+            className="editorial-card rounded-[2rem] p-8"
           >
-            <p className="text-sm text-amber-200">Preview question {index + 1}</p>
-            <h2 className="mt-2 text-2xl font-medium text-white">{question.prompt}</h2>
+            <p className="text-sm text-[color:var(--brand)]">Preview question {index + 1}</p>
+            <h2 className="mt-2 text-2xl font-medium text-[color:var(--foreground)]">
+              {question.prompt}
+            </h2>
             {question.options.length > 0 ? (
-              <ul className="mt-5 space-y-3 text-slate-300">
+              <ul className="mt-5 space-y-3 text-[color:var(--ink-soft)]">
                 {question.options.map((option) => (
-                  <li key={option} className="rounded-2xl border border-white/10 px-4 py-3">
+                  <li
+                    key={option}
+                    className="rounded-2xl border border-[var(--line)] bg-white/65 px-4 py-3"
+                  >
                     {option}
                   </li>
                 ))}
               </ul>
             ) : (
-              <p className="mt-4 text-slate-300">
+              <p className="mt-4 text-[color:var(--ink-soft)]">
                 This is an open response question for speaking or writing practice.
               </p>
             )}
