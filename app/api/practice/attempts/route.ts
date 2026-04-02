@@ -1,9 +1,8 @@
 import { NextResponse } from "next/server";
 
 import { getSession } from "@/lib/auth";
-import { connectToDatabase } from "@/lib/db";
 import { attemptSchema } from "@/lib/validation";
-import { Attempt } from "@/models/Attempt";
+import { createClient } from "@/utils/supabase/server";
 
 export async function POST(request: Request) {
   try {
@@ -20,17 +19,21 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Invalid attempt data." }, { status: 400 });
     }
 
-    await connectToDatabase();
-    const attempt = await Attempt.create({
-      userId: session.userId,
-      examId: parsed.data.examId,
+    const supabase = await createClient();
+    const { error } = await supabase.from("attempts").insert({
+      user_id: session.userId,
+      exam_id: parsed.data.examId,
       score: parsed.data.score,
       answers: parsed.data.answers
     });
 
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
     return NextResponse.json({
       message: "Attempt saved.",
-      score: attempt.score
+      score: parsed.data.score
     });
   } catch {
     return NextResponse.json({ error: "Could not save attempt." }, { status: 500 });

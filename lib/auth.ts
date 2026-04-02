@@ -1,51 +1,70 @@
-import { SignJWT, jwtVerify } from "jose";
-import { cookies } from "next/headers";
-
-const COOKIE_NAME = "examflow_session";
-const secret = new TextEncoder().encode(process.env.JWT_SECRET || "dev-secret");
+import { createClient } from "@/utils/supabase/server";
+import { isSupabaseConfigured } from "@/utils/supabase/config";
+import type { AppRole } from "@/lib/role-map";
 
 export type SessionUser = {
   userId: string;
   email: string;
   name: string;
+  role: AppRole;
 };
 
-export async function createSession(user: SessionUser) {
-  return new SignJWT(user)
-    .setProtectedHeader({ alg: "HS256" })
-    .setIssuedAt()
-    .setExpirationTime("7d")
-    .sign(secret);
-}
-
-export async function setSessionCookie(token: string) {
-  const cookieStore = await cookies();
-  cookieStore.set(COOKIE_NAME, token, {
-    httpOnly: true,
-    sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
-    path: "/",
-    maxAge: 60 * 60 * 24 * 7
-  });
-}
-
-export async function clearSessionCookie() {
-  const cookieStore = await cookies();
-  cookieStore.delete(COOKIE_NAME);
-}
+export type ProfileUser = SessionUser;
 
 export async function getSession() {
-  const cookieStore = await cookies();
-  const token = cookieStore.get(COOKIE_NAME)?.value;
-
-  if (!token) {
+  if (!isSupabaseConfigured()) {
     return null;
   }
 
-  try {
-    const verified = await jwtVerify(token, secret);
-    return verified.payload as unknown as SessionUser;
-  } catch {
+  const supabase = await createClient();
+  const {
+    data: { user }
+  } = await supabase.auth.getUser();
+
+  if (!user) {
     return null;
   }
+
+  return {
+    userId: user.id,
+    email: user.email || "",
+    name:
+      typeof user.user_metadata?.name === "string"
+        ? user.user_metadata.name
+        : user.email?.split("@")[0] || "Student",
+    role:
+      user.app_metadata?.role === "super_admin"
+        ? "super_admin"
+        : user.app_metadata?.role === "admin"
+          ? "admin"
+          : "student"
+  } satisfies SessionUser;
+}
+
+export async function getProfile() {
+  const session = await getSession();
+
+  if (!session) {
+    return null;
+  }
+
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("users")
+    .select("name, email, lastname, role_id")
+    .eq("id", session.userId)
+    .maybeSingle();
+
+  return {
+    ...session,
+    name:
+      typeof data?.name === "string" && data.name.length > 0
+        ? data.name
+        : session.name,
+    email:
+      typeof data?.email === "string" && data.email.length > 0
+        ? data.email
+        : session.email,
+    role: session.role
+  } satisfies ProfileUser;
 }

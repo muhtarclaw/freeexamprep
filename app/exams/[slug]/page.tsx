@@ -1,10 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { connectToDatabase } from "@/lib/db";
 import { sampleExams, sampleQuestions } from "@/lib/sample-data";
-import { Exam } from "@/models/Exam";
-import { Question } from "@/models/Question";
 
 type ExamDetailPageProps = {
   params: Promise<{ slug: string }>;
@@ -15,42 +12,8 @@ export default async function ExamDetailPage({ params }: ExamDetailPageProps) {
   const fallbackExam = sampleExams.find((item) => item.slug === slug);
   const fallbackQuestions = sampleQuestions.filter((item) => item.examSlug === slug);
 
-  let exam = fallbackExam;
-  let questions = fallbackQuestions;
-
-  try {
-    await connectToDatabase();
-    const dbExam = await Exam.findOne({ slug }).lean();
-    const dbQuestions = await Question.find({ examSlug: slug }).lean();
-
-    if (dbExam) {
-      exam = {
-        title: dbExam.title,
-        slug: dbExam.slug,
-        provider: dbExam.provider,
-        level: dbExam.level,
-        category: dbExam.category,
-        durationMinutes: dbExam.durationMinutes,
-        description: dbExam.description,
-        isPremium: dbExam.isPremium,
-        questionCount: dbExam.questionCount
-      };
-    }
-
-    if (dbQuestions.length > 0) {
-      questions = dbQuestions.map((question) => ({
-        examSlug: question.examSlug,
-        prompt: question.prompt,
-        type: question.type,
-        options: question.options || [],
-        answer: question.answer,
-        explanation: question.explanation
-      }));
-    }
-  } catch {
-    exam = fallbackExam;
-    questions = fallbackQuestions;
-  }
+  const exam = fallbackExam;
+  const questions = fallbackQuestions;
 
   if (!exam) {
     notFound();

@@ -8,12 +8,21 @@ export async function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-30 border-b border-white/10 bg-slate-950/80 backdrop-blur-xl">
+      <div className="border-b border-emerald-400/15 bg-emerald-400/10">
+        <div className="mx-auto max-w-7xl px-6 py-2 text-center text-xs font-semibold uppercase tracking-[0.3em] text-emerald-200 lg:px-8">
+          Completely Free For Every Learner
+        </div>
+      </div>
+
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
         <Link href="/">
           <Logo />
         </Link>
 
         <nav className="hidden items-center gap-6 text-sm text-slate-300 md:flex">
+          <span className="rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-emerald-200">
+            100% Free
+          </span>
           <Link href="/exams" className="transition hover:text-white">
             Exams
           </Link>
@@ -52,7 +61,7 @@ export async function SiteHeader() {
                 href="/register"
                 className="rounded-full bg-[linear-gradient(135deg,var(--brand),var(--brand-2))] px-4 py-2 text-sm font-semibold text-slate-950 transition hover:scale-[1.02]"
               >
-                Start free
+                Join free
               </Link>
             </>
           )}

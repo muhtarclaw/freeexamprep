@@ -8,7 +8,7 @@ export function Logo() {
         <p className="text-sm font-semibold uppercase tracking-[0.3em] text-amber-300/80">
           ExamFlow
         </p>
-        <p className="text-xs text-slate-400">TELC-ready practice for everyone</p>
+        <p className="text-xs text-slate-400">Free TELC-ready practice for everyone</p>
       </div>
     </div>
   );

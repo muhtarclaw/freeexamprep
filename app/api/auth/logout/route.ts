@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
 
-import { clearSessionCookie } from "@/lib/auth";
+import { createClient } from "@/utils/supabase/server";
 
 export async function POST(request: Request) {
-  await clearSessionCookie();
+  const supabase = await createClient();
+  await supabase.auth.signOut();
   return NextResponse.redirect(new URL("/", request.url));
 }

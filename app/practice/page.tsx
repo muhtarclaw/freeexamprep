@@ -1,12 +1,9 @@
 import Link from "next/link";
 
 import { getSession } from "@/lib/auth";
-import { connectToDatabase } from "@/lib/db";
 import { sampleExams, sampleQuestions } from "@/lib/sample-data";
-import { Attempt } from "@/models/Attempt";
-import { Exam } from "@/models/Exam";
-import { Question } from "@/models/Question";
 import { PracticeClient } from "@/components/practice-client";
+import { createClient } from "@/utils/supabase/server";
 
 type PracticePageProps = {
   searchParams: Promise<{ exam?: string }>;
@@ -16,7 +13,8 @@ export default async function PracticePage({ searchParams }: PracticePageProps) 
   const session = await getSession();
   const { exam: examSlug } = await searchParams;
 
-  let selectedExam = sampleExams[0];
+  const selectedExam =
+    sampleExams.find((item) => item.slug === examSlug) || sampleExams[0];
   let questions = sampleQuestions
     .filter((item) => item.examSlug === selectedExam.slug)
     .map((question, index) => ({
@@ -25,53 +23,24 @@ export default async function PracticePage({ searchParams }: PracticePageProps) 
     }));
   let attempts: Array<{ score: number; createdAt: string }> = [];
 
-  try {
-    await connectToDatabase();
+  if (session) {
+    try {
+      const supabase = await createClient();
+      const { data } = await supabase
+        .from("attempts")
+        .select("score, created_at")
+        .eq("user_id", session.userId)
+        .order("created_at", { ascending: false })
+        .limit(5);
 
-    if (examSlug) {
-      const dbExam = await Exam.findOne({ slug: examSlug }).lean();
-      if (dbExam) {
-        selectedExam = {
-          title: dbExam.title,
-          slug: dbExam.slug,
-          provider: dbExam.provider,
-          level: dbExam.level,
-          category: dbExam.category,
-          durationMinutes: dbExam.durationMinutes,
-          description: dbExam.description,
-          isPremium: dbExam.isPremium,
-          questionCount: dbExam.questionCount
-        };
-      }
+      attempts =
+        data?.map((row) => ({
+          score: row.score as number,
+          createdAt: new Date(String(row.created_at)).toLocaleDateString()
+        })) || [];
+    } catch {
+      attempts = [];
     }
-
-    const dbQuestions = await Question.find({ examSlug: selectedExam.slug }).lean();
-    if (dbQuestions.length > 0) {
-      questions = dbQuestions.map((question) => ({
-        _id: String(question._id),
-        prompt: question.prompt,
-        type: question.type,
-        options: question.options || [],
-        answer: question.answer,
-        explanation: question.explanation,
-        examSlug: question.examSlug
-      }));
-    }
-
-    if (session) {
-      attempts = await Attempt.find({ userId: session.userId })
-        .sort({ createdAt: -1 })
-        .limit(5)
-        .lean()
-        .then((rows) =>
-          rows.map((row) => ({
-            score: row.score,
-            createdAt: new Date(row.createdAt).toLocaleDateString()
-          }))
-        );
-    }
-  } catch {
-    attempts = [];
   }
 
   return (

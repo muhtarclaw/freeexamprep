@@ -1,10 +1,7 @@
-import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
 
-import { connectToDatabase } from "@/lib/db";
-import { createSession, setSessionCookie } from "@/lib/auth";
 import { loginSchema } from "@/lib/validation";
-import { User } from "@/models/User";
+import { createClient } from "@/utils/supabase/server";
 
 export async function POST(request: Request) {
   try {
@@ -15,29 +12,26 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Invalid login data." }, { status: 400 });
     }
 
-    await connectToDatabase();
-    const user = await User.findOne({ email: parsed.data.email });
-
-    if (!user) {
-      return NextResponse.json({ error: "Account not found." }, { status: 404 });
-    }
-
-    const isValid = await bcrypt.compare(parsed.data.password, user.passwordHash);
-    if (!isValid) {
-      return NextResponse.json({ error: "Incorrect password." }, { status: 401 });
-    }
-
-    const token = await createSession({
-      userId: String(user._id),
-      email: user.email,
-      name: user.name
+    const supabase = await createClient();
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: parsed.data.email,
+      password: parsed.data.password
     });
 
-    await setSessionCookie(token);
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 401 });
+    }
 
     return NextResponse.json({
       message: "Login successful.",
-      user: { id: String(user._id), name: user.name, email: user.email }
+      user: {
+        id: data.user.id,
+        name:
+          typeof data.user.user_metadata?.name === "string"
+            ? data.user.user_metadata.name
+            : data.user.email?.split("@")[0] || "Student",
+        email: data.user.email
+      }
     });
   } catch {
     return NextResponse.json({ error: "Unable to log in right now." }, { status: 500 });

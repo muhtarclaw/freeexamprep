@@ -1,8 +1,7 @@
 import { NextResponse } from "next/server";
 
-import { connectToDatabase } from "@/lib/db";
 import { supportSchema } from "@/lib/validation";
-import { SupportContribution } from "@/models/SupportContribution";
+import { createClient } from "@/utils/supabase/server";
 
 export async function POST(request: Request) {
   try {
@@ -13,18 +12,23 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Invalid support details." }, { status: 400 });
     }
 
-    await connectToDatabase();
-    await SupportContribution.create({
+    const supabase = await createClient();
+    const { error } = await supabase.from("support_contributions").insert({
       name: parsed.data.name,
       email: parsed.data.email,
       amount: parsed.data.amount,
+      currency: "USD",
       message: parsed.data.message || "",
+      provider: "paypal",
       status: "pending"
     });
 
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
     return NextResponse.json({
-      message:
-        "Support intent saved. Connect Stripe or PayPal next to collect real payments."
+      message: "Support contribution saved."
     });
   } catch {
     return NextResponse.json({ error: "Unable to save support request." }, { status: 500 });

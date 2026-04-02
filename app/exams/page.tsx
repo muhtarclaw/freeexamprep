@@ -1,32 +1,8 @@
-import { connectToDatabase } from "@/lib/db";
 import { sampleExams } from "@/lib/sample-data";
-import { Exam } from "@/models/Exam";
 import { ExamCard } from "@/components/exam-card";
 import { SectionTitle } from "@/components/section-title";
 
 export default async function ExamsPage() {
-  let exams = sampleExams;
-
-  try {
-    await connectToDatabase();
-    const dbExams = await Exam.find().sort({ createdAt: -1 }).lean();
-    if (dbExams.length > 0) {
-      exams = dbExams.map((exam) => ({
-        title: exam.title,
-        slug: exam.slug,
-        provider: exam.provider,
-        level: exam.level,
-        category: exam.category,
-        durationMinutes: exam.durationMinutes,
-        description: exam.description,
-        isPremium: exam.isPremium,
-        questionCount: exam.questionCount
-      }));
-    }
-  } catch {
-    exams = sampleExams;
-  }
-
   return (
     <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
       <SectionTitle
@@ -36,7 +12,7 @@ export default async function ExamsPage() {
       />
 
       <div className="mt-10 grid gap-6 lg:grid-cols-3">
-        {exams.map((exam) => (
+        {sampleExams.map((exam) => (
           <ExamCard key={exam.slug} exam={exam} />
         ))}
       </div>
