@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { LaptopMinimal, Moon, Sun } from "lucide-react";
 
 type ThemePreference = "system" | "light" | "dark";
@@ -26,6 +26,8 @@ function applyTheme(preference: ThemePreference) {
 
 export function ThemeToggle() {
   const [theme, setTheme] = useState<ThemePreference>("system");
+  const [isOpen, setIsOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const savedTheme =
@@ -52,10 +54,32 @@ export function ThemeToggle() {
     return () => mediaQuery.removeEventListener("change", handleChange);
   }, []);
 
+  useEffect(() => {
+    function handlePointerDown(event: MouseEvent | TouchEvent) {
+      if (!containerRef.current) {
+        return;
+      }
+
+      const target = event.target;
+      if (target instanceof Node && !containerRef.current.contains(target)) {
+        setIsOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handlePointerDown);
+    document.addEventListener("touchstart", handlePointerDown);
+
+    return () => {
+      document.removeEventListener("mousedown", handlePointerDown);
+      document.removeEventListener("touchstart", handlePointerDown);
+    };
+  }, []);
+
   function handleThemeChange(nextTheme: ThemePreference) {
     setTheme(nextTheme);
     window.localStorage.setItem(STORAGE_KEY, nextTheme);
     applyTheme(nextTheme);
+    setIsOpen(false);
   }
 
   const themeOptions = [
@@ -81,12 +105,14 @@ export function ThemeToggle() {
 
   return (
     <div
+      ref={containerRef}
       className="group inline-flex items-center overflow-hidden rounded-full border border-[var(--line)] bg-[color:var(--panel-strong)]"
       aria-label="Theme selector"
       role="group"
     >
       {themeOptions.map((option) => {
         const isActive = option.value === activeOption.value;
+        const shouldReveal = !isActive && isOpen;
 
         return (
           <button
@@ -95,11 +121,13 @@ export function ThemeToggle() {
             aria-label={option.label}
             aria-pressed={isActive}
             title={option.label}
-            onClick={() => handleThemeChange(option.value)}
+            onClick={() =>
+              isActive ? setIsOpen((current) => !current) : handleThemeChange(option.value)
+            }
             className={`overflow-hidden rounded-full transition-all duration-200 focus-visible:outline-none ${
               isActive
                 ? "w-8 bg-[color:var(--foreground)] p-2 text-[color:var(--panel-strong)]"
-                : "pointer-events-none w-0 p-0 opacity-0 text-[color:var(--ink-soft)] group-hover:pointer-events-auto group-hover:ml-1 group-hover:w-8 group-hover:p-2 group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:ml-1 group-focus-within:w-8 group-focus-within:p-2 group-focus-within:opacity-100 hover:bg-[color:var(--accent-soft)] hover:text-[color:var(--foreground)] focus-visible:bg-[color:var(--accent-soft)] focus-visible:text-[color:var(--foreground)]"
+                : `${shouldReveal ? "ml-1 w-8 p-2 opacity-100" : "pointer-events-none w-0 p-0 opacity-0"} text-[color:var(--ink-soft)] group-hover:pointer-events-auto group-hover:ml-1 group-hover:w-8 group-hover:p-2 group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:ml-1 group-focus-within:w-8 group-focus-within:p-2 group-focus-within:opacity-100 hover:bg-[color:var(--accent-soft)] hover:text-[color:var(--foreground)] focus-visible:bg-[color:var(--accent-soft)] focus-visible:text-[color:var(--foreground)]`
             }`}
           >
             <option.icon className="h-4 w-4" />
