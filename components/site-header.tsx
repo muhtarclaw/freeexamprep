@@ -5,6 +5,7 @@ import { getSession } from "@/lib/auth";
 import { HeaderAnnouncement } from "@/components/header-announcement";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { Logo } from "@/components/logo";
+import { MobileScrollSupportLink } from "@/components/mobile-scroll-support-link";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { getTranslations, languageOptions } from "@/lib/i18n";
 
@@ -80,6 +81,7 @@ export async function SiteHeader() {
           </Link>
 
           <div className="flex items-center gap-2">
+            <MobileScrollSupportLink label={messages.nav.support} />
             <LanguageSwitcher
               compact
               currentLocale={locale}
