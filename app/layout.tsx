@@ -5,9 +5,12 @@ import "./globals.css";
 import { SiteHeader } from "@/components/site-header";
 
 export const metadata: Metadata = {
-  title: "ExamFlow",
+  title: "FreeExamPrep",
   description:
-    "A modern TELC-style exam practice platform with free public access, login-based progress tracking, uploads, and community support."
+    "A modern TELC-style exam practice platform with free public access, login-based progress tracking, uploads, and community support.",
+  icons: {
+    icon: "/icon.svg"
+  }
 };
 
 export default function RootLayout({

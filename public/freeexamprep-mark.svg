@@ -1,0 +1,19 @@
+<svg width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="freeexamprep-gradient" x1="18" y1="14" x2="78" y2="82" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F7CF66"/>
+      <stop offset="1" stop-color="#F38A5D"/>
+    </linearGradient>
+    <linearGradient id="freeexamprep-gloss" x1="26" y1="18" x2="70" y2="72" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF2C2" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect x="10" y="10" width="76" height="76" rx="24" fill="url(#freeexamprep-gradient)"/>
+  <rect x="10" y="10" width="76" height="76" rx="24" fill="url(#freeexamprep-gloss)"/>
+  <g transform="translate(28 24)">
+    <path d="M14 4H10C7.79086 4 6 5.79086 6 8V32C6 34.2091 7.79086 36 10 36H30C32.2091 36 34 34.2091 34 32V8C34 5.79086 32.2091 4 30 4H26" stroke="#0A1322" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M14 4C14 1.79086 15.7909 0 18 0H22C24.2091 0 26 1.79086 26 4C26 6.20914 24.2091 8 22 8H18C15.7909 8 14 6.20914 14 4Z" stroke="#0A1322" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M14 21L18 25L26 17" stroke="#0A1322" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

@@ -42,15 +42,28 @@ export function AuthForm({ mode }: AuthFormProps) {
       className="space-y-5 rounded-[2rem] border border-white/10 bg-white/5 p-8 shadow-2xl shadow-black/20"
     >
       {mode === "register" ? (
-        <div>
-          <label className="mb-2 block text-sm text-slate-300">Full name</label>
-          <input
-            name="name"
-            required
-            className="w-full rounded-2xl border border-white/10 bg-slate-950/80 px-4 py-3 text-white outline-none transition focus:border-amber-300"
-            placeholder="Your name"
-          />
-        </div>
+        <>
+          <div>
+            <label className="mb-2 block text-sm text-slate-300">First name</label>
+            <input
+              name="name"
+              required
+              className="w-full rounded-2xl border border-white/10 bg-slate-950/80 px-4 py-3 text-white outline-none transition focus:border-amber-300"
+              placeholder="Your first name"
+            />
+          </div>
+
+          <div>
+            <label className="mb-2 block text-sm text-slate-300">
+              Last name <span className="text-slate-500">(optional)</span>
+            </label>
+            <input
+              name="lastname"
+              className="w-full rounded-2xl border border-white/10 bg-slate-950/80 px-4 py-3 text-white outline-none transition focus:border-amber-300"
+              placeholder="Your last name"
+            />
+          </div>
+        </>
       ) : null}
 
       <div>
