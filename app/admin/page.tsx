@@ -1,91 +1,78 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
-import { ShieldCheck, Users, WalletCards, Files } from "lucide-react";
+import Link from "next/link";
+import { Users, Activity, HeartHandshake, BarChart3, ArrowLeft } from "lucide-react";
 
 import { getProfile } from "@/lib/auth";
+import { createClient } from "@/utils/supabase/server";
+import { AdminStats } from "@/components/admin/admin-stats";
+import { AdminUsers } from "@/components/admin/admin-users";
+import { AdminActivities } from "@/components/admin/admin-activities";
+import { AdminContributions } from "@/components/admin/admin-contributions";
 
-export default async function AdminPage() {
+export default async function AdminDashboardPage() {
   const profile = await getProfile();
 
-  if (!profile) {
-    redirect("/login");
-  }
+  if (!profile) redirect("/login");
+  if (profile.role !== "admin" && profile.role !== "super_admin") redirect("/");
 
-  if (profile.role !== "admin" && profile.role !== "super_admin") {
-    redirect("/");
-  }
+  const supabase = await createClient();
+
+  // Fetch counts and recent data in parallel
+  const [
+    usersResult,
+    activitiesResult,
+    contributionsResult,
+  ] = await Promise.all([
+    supabase.from("users").select("id, email, name, lastname, role, created_at").order("created_at", { ascending: false }).limit(20),
+    supabase.from("quiz_activities").select("id, quiz_type, quiz_id, correct_count, total_count, completed_at, user_id").order("completed_at", { ascending: false }).limit(20),
+    supabase.from("support_contributions").select("id, name, email, amount, currency, status, created_at").order("created_at", { ascending: false }).limit(10),
+  ]);
+
+  const users = usersResult.data ?? [];
+  const activities = activitiesResult.data ?? [];
+  const contributions = contributionsResult.data ?? [];
 
   return (
-    <div className="mx-auto max-w-6xl px-6 py-16 lg:px-8">
-      <div className="rounded-[2.5rem] border border-[color:var(--accent)]/20 bg-[color:var(--status-success-soft)] p-8">
-        <p className="text-sm font-semibold uppercase tracking-[0.35em] text-[color:var(--status-success)]">
-          Admin Area
-        </p>
-        <h1 className="mt-4 text-4xl font-semibold text-[color:var(--foreground)]">
-          Welcome back, {profile.name}
-        </h1>
-        <p className="mt-4 max-w-2xl text-[color:var(--ink-soft)]">
-          This page is protected and only visible to users whose profile role is
-          set to `admin` in Supabase.
-        </p>
-        <div className="mt-6 flex flex-wrap gap-3 text-sm text-[color:var(--foreground)]">
-          <span className="rounded-full border border-[var(--line)] px-4 py-2">
-            {profile.email}
-          </span>
-          <span className="rounded-full border border-[color:var(--accent)]/20 bg-[color:var(--status-success-soft)] px-4 py-2 text-[color:var(--status-success)]">
-            Role: {profile.role}
-          </span>
-        </div>
-      </div>
-
-      <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-        {[
-          {
-            icon: Users,
-            title: "Users",
-            copy: "Manage learner accounts and promote trusted moderators."
-          },
-          {
-            icon: Files,
-            title: "Uploads",
-            copy: "Review submitted documents before approving them for use."
-          },
-          {
-            icon: WalletCards,
-            title: "Support",
-            copy: "Track PayPal contributions that help keep the platform free."
-          },
-          {
-            icon: ShieldCheck,
-            title: "Security",
-            copy: "Use this area for future admin-only tools and monitoring."
-          }
-        ].map((item) => (
-          <div
-            key={item.title}
-            className="editorial-card rounded-[2rem] p-6"
-          >
-            <item.icon className="h-6 w-6 text-[color:var(--brand)]" />
-            <h2 className="mt-4 text-xl font-semibold text-[color:var(--foreground)]">{item.title}</h2>
-            <p className="mt-3 text-sm leading-6 text-[color:var(--ink-soft)]">{item.copy}</p>
+    <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8">
+      {/* Header */}
+      <div className="mb-10 flex items-center justify-between">
+        <div>
+          <div className="flex items-center gap-3 mb-2">
+            <span className="rounded-full bg-[color:var(--brand)] px-3 py-1 text-xs font-bold text-white">
+              Admin
+            </span>
+            <span className="text-xs text-[color:var(--ink-soft)]">
+              angemeldet als <strong>{profile.email}</strong>
+            </span>
           </div>
-        ))}
-      </div>
-
-      <div className="editorial-card mt-10 rounded-[2rem] p-8">
-        <p className="text-lg font-semibold text-[color:var(--foreground)]">Next setup steps</p>
-        <p className="mt-3 text-[color:var(--ink-soft)]">
-          Run the SQL in `supabase/schema.sql`, set your service role key in
-          `.env.local`, then run `npm run create:admin` to ensure your admin user
-          and profile row exist.
-        </p>
+          <h1 className="text-3xl font-bold text-[color:var(--foreground)] font-serif">
+            Dashboard
+          </h1>
+        </div>
         <Link
-          href="/support"
-          className="mt-6 inline-flex rounded-full bg-[color:var(--foreground)] px-5 py-3 text-sm font-semibold text-[color:var(--panel-strong)] transition hover:bg-[color:var(--brand)] hover:text-white"
+          href="/"
+          className="inline-flex items-center gap-2 rounded-full border border-[var(--line)] px-4 py-2 text-sm text-[color:var(--ink-soft)] hover:text-[color:var(--foreground)] transition"
         >
-          Back to site
+          <ArrowLeft className="h-4 w-4" /> Zurück zur Seite
         </Link>
       </div>
+
+      {/* Stats */}
+      <AdminStats
+        userCount={users.length}
+        activityCount={activities.length}
+        contributionCount={contributions.length}
+        totalRaised={contributions.reduce((sum, c) => sum + Number(c.amount), 0)}
+      />
+
+      {/* Users Table */}
+      <AdminUsers users={users} />
+
+      {/* Recent Quiz Activities */}
+      <AdminActivities activities={activities} />
+
+      {/* Recent Support Contributions */}
+      <AdminContributions contributions={contributions} />
     </div>
   );
 }
