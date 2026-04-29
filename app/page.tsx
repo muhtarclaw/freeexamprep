@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { BookOpenText, Mic, PenTool, Headphones, FileText, ChevronRight } from "lucide-react";
 
-import { SiteHeader } from "@/components/site-header";
 import { quizzes } from "@/data/quizzes";
 
 const sections = [
@@ -90,17 +89,17 @@ const sections = [
 export default function HomePage() {
   return (
     <div className="min-h-screen">
-      <SiteHeader />
+
       <main className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
         <div className="text-center mb-16">
           <h1 className="text-5xl font-bold text-[color:var(--foreground)] font-serif">
-            deuropa.app
+            FreeExamPrep
           </h1>
           <p className="mt-4 text-xl text-[color:var(--ink-soft)]">
             TELC B1 & B2 Deutschprüfungen – Übungsmaterial
           </p>
           <p className="mt-2 text-sm text-[color:var(--ink-soft)]">
-            Alle Quizfragen basierend auf deuropa.app · 2026-04-28
+            Alle Quizfragen basierend auf FreeExamPrep · 2026-04-28
           </p>
         </div>
 

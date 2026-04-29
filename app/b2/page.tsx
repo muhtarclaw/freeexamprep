@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { ArrowLeft, BookOpenText } from "lucide-react";
-import { SiteHeader } from "@/components/site-header";
 import { getQuizzesByLevel } from "@/data/index";
 
 const quizList = getQuizzesByLevel('B2');
@@ -8,7 +7,7 @@ const quizList = getQuizzesByLevel('B2');
 export default function B2Page() {
   return (
     <div className="min-h-screen">
-      <SiteHeader />
+
       <main className="mx-auto max-w-4xl px-6 py-12 lg:px-8">
         <Link href="/" className="inline-flex items-center gap-2 text-sm text-[color:var(--ink-soft)] hover:text-[color:var(--foreground)] transition mb-8">
           <ArrowLeft className="h-4 w-4" /> Zurück zur Übersicht
@@ -17,7 +16,7 @@ export default function B2Page() {
           <BookOpenText className="h-8 w-8" style={{ color: '#8B5CF6' }} />
           <div>
             <h1 className="text-3xl font-bold text-[color:var(--foreground)] font-serif">B2 Prüfungen</h1>
-            <p className="mt-1 text-[color:var(--ink-soft)]">TELC B2 Übungsmaterial von deuropa.app</p>
+            <p className="mt-1 text-[color:var(--ink-soft)]">TELC B2 Übungsmaterial</p>
           </div>
         </div>
         <div className="editorial-card rounded-[2rem] p-2">
