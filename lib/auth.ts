@@ -51,7 +51,7 @@ export async function getProfile() {
   const supabase = await createClient();
   const { data } = await supabase
     .from("users")
-    .select("name, email, lastname, role_id")
+    .select("name, email, lastname, role")
     .eq("id", session.userId)
     .maybeSingle();
 
@@ -65,6 +65,6 @@ export async function getProfile() {
       typeof data?.email === "string" && data.email.length > 0
         ? data.email
         : session.email,
-    role: session.role
+    role: (data?.role as AppRole) || session.role
   } satisfies ProfileUser;
 }
