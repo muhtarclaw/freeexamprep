@@ -31,12 +31,12 @@ export function HeaderAnnouncement({ text, ctaLabel }: HeaderAnnouncementProps) 
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-2.5 sm:px-6 lg:px-8">
         <div className="flex min-w-0 items-center gap-3">
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/70 bg-white/70 text-[color:var(--brand)] shadow-sm backdrop-blur">
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[var(--line)] bg-[color:var(--surface-muted)] text-[color:var(--brand)] shadow-sm backdrop-blur">
             <HeartHandshake className="h-4 w-4" />
           </div>
 
           <div className="flex min-w-0 flex-wrap items-center gap-2 sm:gap-2.5">
-          <span className="hidden shrink-0 items-center rounded-full border border-[color:color-mix(in_srgb,var(--brand)_22%,transparent)] bg-white/60 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.22em] text-[color:var(--brand)] backdrop-blur md:inline-flex">
+          <span className="hidden shrink-0 items-center rounded-full border border-[color:var(--brand)]/30 bg-[color:var(--brand)]/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.22em] text-[color:var(--brand)] backdrop-blur md:inline-flex">
             Support Free Learning
           </span>
           <p className="hidden min-w-0 text-sm font-medium leading-6 text-[color:var(--foreground)] md:block">
@@ -47,7 +47,7 @@ export function HeaderAnnouncement({ text, ctaLabel }: HeaderAnnouncementProps) 
 
         <Link
           href="/support"
-          className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full border border-[color:color-mix(in_srgb,var(--brand)_30%,transparent)] bg-white/70 px-4 py-2 text-sm font-semibold text-[color:var(--foreground)] backdrop-blur transition hover:border-[color:var(--brand)] hover:text-[color:var(--brand)]"
+          className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full border border-[var(--brand)]/40 bg-[color:var(--brand)]/15 px-4 py-2 text-sm font-semibold text-[color:var(--foreground)] backdrop-blur transition hover:border-[color:var(--brand)] hover:text-[color:var(--brand)]"
         >
           {ctaLabel}
           <ArrowRight className="h-4 w-4" />
