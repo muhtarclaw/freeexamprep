@@ -34,10 +34,10 @@ function QuizRenderer({ quiz }: Props) {
                     selected[si] === oi
                       ? revealed
                         ? oi === q.correctAnswers[si]
-                          ? "border-green-500 bg-green-50 text-green-800"
-                          : "border-red-500 bg-red-50 text-red-800"
-                          : "border-[color:var(--brand)] bg-[color:var(--brand)]/10 text-[color:var(--brand)]"
-                        : "border-[var(--line)] bg-white/60 hover:bg-white"
+                          ? "border-[color:var(--status-success)] bg-[color:var(--option-correct-bg)] text-[color:var(--status-success)]"
+                          : "border-[color:var(--status-danger)] bg-[color:var(--option-wrong-bg)] text-[color:var(--status-danger)]"
+                        : "border-[color:var(--brand)] bg-[color:var(--brand)]/15 text-[color:var(--brand)]"
+                      : "border-[var(--line)] bg-[color:var(--option-bg)] hover:bg-[color:var(--option-hover)]"
                   }`}
                 >
                   <span className="font-bold mr-2">{String.fromCharCode(97 + oi)}.</span>
@@ -95,10 +95,10 @@ function QuizRenderer({ quiz }: Props) {
                     selected[qi] === oi
                       ? revealed
                         ? oi === q.correctAnswers[qi]
-                          ? "border-green-500 bg-green-50 text-green-800"
-                          : "border-red-500 bg-red-50 text-red-800"
-                          : "border-[color:var(--brand)] bg-[color:var(--brand)]/10 text-[color:var(--brand)]"
-                        : "border-[var(--line)] bg-white/60 hover:bg-white"
+                          ? "border-[color:var(--status-success)] bg-[color:var(--option-correct-bg)] text-[color:var(--status-success)]"
+                          : "border-[color:var(--status-danger)] bg-[color:var(--option-wrong-bg)] text-[color:var(--status-danger)]"
+                        : "border-[color:var(--brand)] bg-[color:var(--brand)]/15 text-[color:var(--brand)]"
+                      : "border-[var(--line)] bg-[color:var(--option-bg)] hover:bg-[color:var(--option-hover)]"
                   }`}
                 >
                   <span className="font-bold mr-2">{String.fromCharCode(97 + oi)}.</span>
@@ -225,10 +225,10 @@ function QuizRenderer({ quiz }: Props) {
                         sel === oi
                           ? revealed2
                             ? opt === blank.options[blank.correctAnswer]
-                              ? "border-green-500 bg-green-50 text-green-800"
-                              : "border-red-500 bg-red-50 text-red-800"
+                              ? "border-[color:var(--status-success)] bg-[color:var(--option-correct-bg)] text-[color:var(--status-success)]"
+                              : "border-[color:var(--status-danger)] bg-[color:var(--option-wrong-bg)] text-[color:var(--status-danger)]"
                             : "border-[color:var(--accent)] bg-[color:var(--accent)]/10 text-[color:var(--accent)]"
-                            : "border-[var(--line)] bg-white/60 hover:bg-white text-[color:var(--foreground)]"
+                            : "border-[var(--line)] bg-[color:var(--option-bg)] hover:bg-[color:var(--option-hover)] text-[color:var(--foreground)]"
                       }`}
                     >
                       {opt}
@@ -238,8 +238,8 @@ function QuizRenderer({ quiz }: Props) {
                 {revealed2 && sel !== undefined && (
                   <p className="mt-2 text-sm">
                     {sel === blank.correctAnswer
-                      ? <span className="text-green-600">✅ Richtig!</span>
-                      : <span className="text-red-600">❌ Richtig: <strong>{blank.options[blank.correctAnswer]}</strong></span>
+                      ? <span className="text-[color:var(--status-success)]">✅ Richtig!</span>
+                      : <span className="text-[color:var(--status-danger)]">❌ Richtig: <strong>{blank.options[blank.correctAnswer]}</strong></span>
                     }
                   </p>
                 )}
@@ -293,10 +293,10 @@ function QuizRenderer({ quiz }: Props) {
                       selected[blank.id] === oi
                         ? revealed
                           ? opt === blank.options[blank.correctAnswer]
-                            ? "border-green-500 bg-green-50 text-green-800"
-                            : "border-red-500 bg-red-50 text-red-800"
+                            ? "border-[color:var(--status-success)] bg-[color:var(--option-correct-bg)] text-[color:var(--status-success)]"
+                            : "border-[color:var(--status-danger)] bg-[color:var(--option-wrong-bg)] text-[color:var(--status-danger)]"
                             : "border-[color:var(--accent)] bg-[color:var(--accent)]/10 text-[color:var(--accent)]"
-                        : "border-[var(--line)] bg-white/60 hover:bg-white text-[color:var(--foreground)]"
+                        : "border-[var(--line)] bg-[color:var(--option-bg)] hover:bg-[color:var(--option-hover)] text-[color:var(--foreground)]"
                     }`}
                   >
                     {opt}
@@ -346,9 +346,9 @@ function QuizRenderer({ quiz }: Props) {
                         className={`rounded-full px-4 py-1.5 text-xs font-semibold border transition ${
                           answers[`${ei}-${q2.id}`] === val
                             ? val === q2.correct
-                              ? "border-green-500 bg-green-50 text-green-700"
-                              : "border-red-500 bg-red-50 text-red-700"
-                            : "border-[var(--line)] bg-white/60 hover:bg-white text-[color:var(--foreground)]"
+                              ? "border-[color:var(--status-success)] bg-[color:var(--option-correct-bg)] text-[color:var(--status-success)]"
+                              : "border-[color:var(--status-danger)] bg-[color:var(--option-wrong-bg)] text-[color:var(--status-danger)]"
+                            : "border-[var(--line)] bg-[color:var(--option-bg)] hover:bg-[color:var(--option-hover)] text-[color:var(--foreground)]"
                         }`}
                       >
                         {val ? "Richtig" : "Falsch"}

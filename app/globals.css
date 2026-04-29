@@ -20,6 +20,10 @@
   --status-success: #2f6c63;
   --status-danger-soft: rgba(181, 63, 63, 0.12);
   --status-danger: #9f3c3c;
+  --option-bg: rgba(255, 255, 255, 0.82);
+  --option-hover: rgba(255, 255, 255, 0.96);
+  --option-correct-bg: rgba(47, 108, 99, 0.15);
+  --option-wrong-bg: rgba(181, 63, 63, 0.12);
   --body-background:
     radial-gradient(circle at top left, rgba(219, 157, 63, 0.24), transparent 24%),
     radial-gradient(circle at top right, rgba(47, 108, 99, 0.14), transparent 25%),
@@ -46,6 +50,10 @@
   --status-success: #6ad2c1;
   --status-danger-soft: rgba(255, 120, 120, 0.14);
   --status-danger: #f3a3a3;
+  --option-bg: rgba(15, 23, 42, 0.65);
+  --option-hover: rgba(255, 255, 255, 0.12);
+  --option-correct-bg: rgba(106, 210, 193, 0.18);
+  --option-wrong-bg: rgba(255, 120, 120, 0.14);
   --body-background:
     radial-gradient(circle at top, rgba(248, 131, 85, 0.2), transparent 28%),
     radial-gradient(circle at 20% 20%, rgba(246, 196, 83, 0.12), transparent 30%),
